@@ -115,15 +115,15 @@ async (ctx,{endFlow,provider}) =>{
     if(ctx.body === '1') {
         const ticket = await sendEmail(ctx.from)
 
-        if(ticket.id){
+        if(ticket){
             const prov = provider.getInstance()
-            await prov.sendMessage(`${ctx.from}@s.whatsapp.net`,{text:`Tu numero de ticket es ${ticket.id}.`})
-            await prov.sendMessage(`${ctx.from}@s.whatsapp.net`,{text:`Podes ver el detalle del mismo ingresando a: ${ticket.url}.`})
+            await prov.sendMessage(`${ctx.from}@s.whatsapp.net`,{text:`Tu numero de ticket es ${ticket}.`})
+            //await prov.sendMessage(`${ctx.from}@s.whatsapp.net`,{text:`Podes ver el detalle del mismo ingresando a: ${ticket.url}.`})
         }else{
             const prov = provider.getInstance()
             await prov.sendMessage(`${ctx.from}@s.whatsapp.net`,{text:`Ticket generado exitosamente.`})
         }
-        await sendMessage(ctx.from,provider,ticket.id)
+        await sendMessage(ctx.from,provider,ticket)
        
         return endFlow({body: `Gracias por comunicarse con nosotros.`}) 
     }
