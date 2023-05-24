@@ -413,7 +413,7 @@ const computerInfo = (from,option) => {
 
 }
 
-const addAudio = async (from,ctx) => {
+/* const addAudio = async (from,ctx) => {
 
   if(!ticket[from].hasOwnProperty("mailAttachments")){
     ticket[from].mailAttachments = []
@@ -427,9 +427,25 @@ const addAudio = async (from,ctx) => {
     payload: buffer
   })
 
+} */
+
+const addAudio = async (from,ctx) => {
+
+  if(!ticket[from].hasOwnProperty("mailAttachments")){
+    ticket[from].mailAttachments = []
+  }
+
+  const buffer = await downloadMediaMessage(ctx,'buffer')
+
+  const audio = {
+    filename: 'adjunto.mp3',
+    content: Buffer.from(buffer, 'base64')
+  }
+  ticket[from].mailAttachments.push(audio)
+
 }
 
-const addImage = async (from,ctx) => {
+/* const addImage = async (from,ctx) => {
 
   if(!ticket[from].hasOwnProperty("mailAttachments")){
     ticket[from].mailAttachments = []
@@ -442,6 +458,22 @@ const addImage = async (from,ctx) => {
     type: "jpg",
     payload: buffer
   })
+
+} */
+
+const addImage = async (from,ctx) => {
+
+  if(!ticket[from].hasOwnProperty("mailAttachments")){
+    ticket[from].mailAttachments = []
+  }
+
+  const buffer = await downloadMediaMessage(ctx,'buffer')
+
+    const image = {
+      filename: 'adjunto.jpg',
+      content: Buffer.from(buffer, 'base64')
+    }
+    ticket[from].mailAttachments.push(image)
 
 }
 
