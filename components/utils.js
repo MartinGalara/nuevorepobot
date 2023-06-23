@@ -176,7 +176,7 @@ const sendEmail = async (from) => {
   await getStaff(from)
 
   let reciever = ""
-  if(ticket[from].userId === "YPtest"){
+  if(ticket[from].testing === true){
     reciever = process.env.TESTINGMAIL
   }else{
     reciever = process.env.RECIEVER
@@ -312,6 +312,7 @@ addProps(from,{userId: fullId})
     ticket[from].info = user.data[0].info
     ticket[from].vip = user.data[0].vip
     ticket[from].vipmail = user.data[0].vipmail
+    ticket[from].testing = user.data[0].testing
     return user.data[0]
   }
   else{
