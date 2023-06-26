@@ -8,7 +8,6 @@ const flujoDespachosCio = addKeyword('1')
     capture: true
 },
 async (ctx,{fallBack,flowDynamic,provider}) => {
-    console.log(ctx)
     if(ctx.message.hasOwnProperty('audioMessage')){
         addAudio(ctx.from,ctx)
         addProps(ctx.from,{description: "Audio adjuntado"}) 
@@ -31,7 +30,6 @@ async (ctx,{fallBack,flowDynamic,provider}) => {
     capture: true
 },
 (ctx,{fallBack,flowDynamic}) => {
-    console.log(ctx)
     if(ctx.message.hasOwnProperty('imageMessage')){
         addImage(ctx.from,ctx)
     }else if (ctx.message.hasOwnProperty('extendedTextMessage') || ctx.message.hasOwnProperty('buttonsResponseMessage')){
@@ -47,7 +45,6 @@ async (ctx,{fallBack,flowDynamic,provider}) => {
     capture: true
 },
 (ctx,{fallBack,flowDynamic}) => {
-    console.log(ctx)
     if(ctx.message.hasOwnProperty('imageMessage')){
         addImage(ctx.from,ctx)
     }else if (ctx.message.hasOwnProperty('extendedTextMessage') || ctx.message.hasOwnProperty('buttonsResponseMessage')){
