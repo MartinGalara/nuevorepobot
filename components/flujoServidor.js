@@ -11,7 +11,7 @@ async (ctx,{fallBack,flowDynamic,provider}) => {
     if(ctx.message.hasOwnProperty('audioMessage')){
         addAudio(ctx.from,ctx)
         addProps(ctx.from,{description: "Audio adjuntado"})
-    }else if(ctx.message.hasOwnProperty('conversation') || ctx.message.hasOwnProperty('buttonsResponseMessage')){
+    }else if(ctx.message.hasOwnProperty('extendedTextMessage') || ctx.message.hasOwnProperty('buttonsResponseMessage')){
         addProps(ctx.from,{description: ctx.body})
     }
     else{
@@ -32,7 +32,7 @@ async (ctx,{fallBack,flowDynamic,provider}) => {
 (ctx,{fallBack,flowDynamic}) => {
     if(ctx.message.hasOwnProperty('imageMessage')){
         addImage(ctx.from,ctx)
-    }else if (ctx.message.hasOwnProperty('conversation') || ctx.message.hasOwnProperty('buttonsResponseMessage')){
+    }else if (ctx.message.hasOwnProperty('extendedTextMessage') || ctx.message.hasOwnProperty('buttonsResponseMessage')){
         // descartamos que sea texto
     }else{
        flowDynamic([{body: "Este campo admite solo imagen o texto"}])
@@ -47,7 +47,7 @@ async (ctx,{fallBack,flowDynamic,provider}) => {
 (ctx,{fallBack,flowDynamic}) => {
     if(ctx.message.hasOwnProperty('imageMessage')){
         addImage(ctx.from,ctx)
-    }else if (ctx.message.hasOwnProperty('conversation') || ctx.message.hasOwnProperty('buttonsResponseMessage')){
+    }else if (ctx.message.hasOwnProperty('extendedTextMessage') || ctx.message.hasOwnProperty('buttonsResponseMessage')){
         // descartamos que sea texto
     }else{
        flowDynamic([{body: "Este campo admite solo imagen o texto"}])
@@ -62,7 +62,7 @@ async (ctx,{fallBack,flowDynamic,provider}) => {
 (ctx,{fallBack,flowDynamic}) => {
     if(ctx.message.hasOwnProperty('imageMessage')){
         addImage(ctx.from,ctx)
-    }else if (ctx.message.hasOwnProperty('conversation') || ctx.message.hasOwnProperty('buttonsResponseMessage')){
+    }else if (ctx.message.hasOwnProperty('extendedTextMessage') || ctx.message.hasOwnProperty('buttonsResponseMessage')){
         // descartamos que sea texto
     }else{
        flowDynamic([{body: "Este campo admite solo imagen o texto"}])
