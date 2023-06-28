@@ -66,8 +66,7 @@ let ticket = {}
     <p>ID TeamViewer: ${ticket[from].tv}</p>
     <p>Descripción del problema: ${ticket[from].description}</p>
     <p>Urgencia indicada por el cliente: ${ticket[from].priority}</p>
-    <br></br>
-    <p>Para generar un ticket de operador: ${process.env.URL_OPTICKET}</p>
+    
     </div>
     ` // html body
   }else if(ticket[from].problem === "Sistema SIGES" || ticket[from].problem === 'Aplicaciones'){
@@ -83,8 +82,7 @@ let ticket = {}
     <p>Origen del problema: ${ticket[from].type}</p>
     <p>Descripción del problema: ${ticket[from].description}</p>
     <p>Urgencia indicada por el cliente: ${ticket[from].priority}</p>
-    <br></br>
-    <p>Para generar un ticket de operador: ${process.env.URL_OPTICKET}</p>
+    
     </div>
     ` // html body
   }else if(ticket[from].problem === "Libro IVA"){
@@ -101,8 +99,7 @@ let ticket = {}
     <p>ID TeamViewer: ${ticket[from].tv}</p>
     <p>Descripción / Info adicional: ${ticket[from].description}</p>
     <p>Urgencia indicada por el cliente: ${ticket[from].priority}</p>
-    <br></br>
-    <p>Para generar un ticket de operador: ${process.env.URL_OPTICKET}</p>
+    
     </div>
     `
   }
@@ -119,8 +116,7 @@ let ticket = {}
     <p>ID TeamViewer: ${ticket[from].tv}</p>
     <p>Descripción / Info adicional: ${ticket[from].description}</p>
     <p>Urgencia indicada por el cliente: ${ticket[from].priority}</p>
-    <br></br>
-    <p>Para generar un ticket de operador: ${process.env.URL_OPTICKET}</p>
+    
     </div>
     `
   } 
@@ -227,8 +223,7 @@ const sendEmail = async (from) => {
     <p>ID TeamViewer: ${ticket[from].tv}</p>
     <p>Descripción del problema: ${ticket[from].description}</p>
     <p>Urgencia indicada por el cliente: ${ticket[from].priority}</p>
-    <br></br>
-    <p>Para generar un ticket de operador: ${process.env.URL_OPTICKET}</p>
+    
     </div>
     ` // html body
   }else if(ticket[from].problem === "Sistema SIGES" || ticket[from].problem === 'Aplicaciones'){
@@ -244,8 +239,7 @@ const sendEmail = async (from) => {
     <p>Origen del problema: ${ticket[from].type}</p>
     <p>Descripción del problema: ${ticket[from].description}</p>
     <p>Urgencia indicada por el cliente: ${ticket[from].priority}</p>
-    <br></br>
-    <p>Para generar un ticket de operador: ${process.env.URL_OPTICKET}</p>
+    
     </div>
     ` // html body
   }else if(ticket[from].problem === "Libro IVA"){
@@ -262,8 +256,7 @@ const sendEmail = async (from) => {
     <p>ID TeamViewer: ${ticket[from].tv}</p>
     <p>Descripción / Info adicional: ${ticket[from].description}</p>
     <p>Urgencia indicada por el cliente: ${ticket[from].priority}</p>
-    <br></br>
-    <p>Para generar un ticket de operador: ${process.env.URL_OPTICKET}</p>
+    
     </div>
     `
   }
@@ -280,8 +273,7 @@ const sendEmail = async (from) => {
     <p>ID TeamViewer: ${ticket[from].tv}</p>
     <p>Descripción / Info adicional: ${ticket[from].description}</p>
     <p>Urgencia indicada por el cliente: ${ticket[from].priority}</p>
-    <br></br>
-    <p>Para generar un ticket de operador: ${process.env.URL_OPTICKET}</p>
+    
     </div>
     `
   }
@@ -289,7 +281,6 @@ const sendEmail = async (from) => {
   const mail = await transporter.sendMail(data);
 
   console.log(ticket)
-  console.log("ticket")
 
   return newTicket.id
 
