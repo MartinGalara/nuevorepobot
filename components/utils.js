@@ -669,5 +669,20 @@ const testing = async (ctx) => {
   });
 };
 
+const getQ1 = (from) => {
+  return ticket[from].q1
+}
 
-module.exports = {testing,tvInDb,getBandera,isUnknown,sendEmail,validateUser,addProps,computers,computerOptions,computerInfo,addAudio,addImage,deleteTicketData,sendMessage}
+const getCategory = (from) => {
+  return ticket[from].categoria
+}
+
+const getInstructivo = (from, index) => {
+  const instructivos = ticket[from].instructivos;
+  const path = instructivos[index-1].path;
+  const filename = instructivos[index-1].filename;
+  return {path,filename}
+};
+
+
+module.exports = {getInstructivo,getCategory,getQ1,testing,tvInDb,getBandera,isUnknown,sendEmail,validateUser,addProps,computers,computerOptions,computerInfo,addAudio,addImage,deleteTicketData,sendMessage}
