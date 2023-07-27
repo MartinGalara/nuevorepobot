@@ -4,7 +4,8 @@ const fs = require('fs');
 const path = require('path');
 
 const categoriasInstructivos = () => {
-    return ["Elija una categoria","1. Operación Playa","2. Operación Tienda","3. Admin - Contable"]
+  return ["Elija una categoria","1. Operación Playa","2. Operación Tienda"]
+    //return ["Elija una categoria","1. Operación Playa","2. Operación Tienda","3. Admin - Contable"]
 }
 
 const categoriaElegida = (from,body) => {
@@ -15,9 +16,9 @@ const categoriaElegida = (from,body) => {
         case "2": 
             addProps(from,{categoria: "Operación Tienda"})
             return true
-        case "3": 
+        /* case "3": 
             addProps(from,{categoria: "Admin - Contable"})
-            return true
+            return true */
        
         default:
             return false
