@@ -4,9 +4,6 @@ const QRPortalWeb = require('@bot-whatsapp/portal')
 const BaileysProvider = require('@bot-whatsapp/provider/baileys')
 const MockAdapter = require('@bot-whatsapp/database/mock')
 
-const {default: makeWASocket} = require('@adiwajshing/baileys')
-const { BufferJSON, useMultiFileAuthState } =require('@adiwajshing/baileys')
-
 const dotenv = require("dotenv");
 dotenv.config();
 
@@ -18,11 +15,13 @@ const flujoServidor = require('./components/flujoServidor.js')
 const flujoLibroIva = require('./components/flujoLibroIva.js')
 const flujoAplicaciones = require('./components/flujoAplicaciones.js')
 
-const {testing,getBandera,isUnknown,addProps,deleteTicketData,validateUser,computers,computerOptions,computerInfo,sendMessage} = require('./components/utils.js')
+const {getBandera,isUnknown,addProps,deleteTicketData,validateUser,computers,computerOptions,computerInfo,getQ1} = require('./components/utils.js')
+const {opcionesBanderas,banderaElegida,opcionesZonas,zonaElegida} = require('./components/auxSoporte.js')
+const {categoriasInstructivos,categoriaElegida,opcionesInstructivos,sendFile} = require('./components/auxInstructivos.js')
 
 const opcionesProblema = ['Despachos CIO','Aplicaciones','Impresora Fiscal / Comandera','Impresora Común / Oficina','Sistema SIGES','Libro IVA','Servidor']
 
-const saludo = ['Gracias por comunicarte con Sistema SIGES.','Elija el numero de la opción deseada',`1. Generar un ticket de soporte`,'2. Salir']
+const saludo = ['Gracias por comunicarte con Sistema SIGES.','Elija el numero de la opción deseada',`1. Generar un ticket de soporte`,'2. Descargar un instructivo','3. Salir']
 
 const opciones = ['Elija el numero del problema que tiene','1. Despachos CIO','2. Aplicaciones','3. Impresora Fiscal / Comandera','4. Impresora Común / Oficina','5. Sistema SIGES','6. Libro IVA','7. Servidor']
 
@@ -43,79 +42,116 @@ const flujoPrincipal = addKeyword(['sigesbot'])
 {
     capture: true
 },
-async (ctx,{endFlow,fallBack}) => {
+async (ctx,{endFlow,fallBack,flowDynamic}) => {
 
     deleteTicketData(ctx.from)
-    if(ctx.message.hasOwnProperty('imageMessage')){
-        await testing(ctx)
+    if(ctx.body === '3'){
         return endFlow({body: `Escriba "sigesbot" para volver a comenzar`})
     }
-    if(ctx.body === '2'){
-        return endFlow({body: `Escriba "sigesbot" para volver a comenzar`})
-    }
-    if(ctx.body !== '1'){
+    if(ctx.body !== '1' && ctx.body !== '2'){
         return fallBack();
+    }
+    if(ctx.body === '1') {
+        addProps(ctx.from,{q1: "1"})
+        const banderas = opcionesBanderas()
+        setTimeout(()=> {
+            flowDynamic(banderas)
+        },500)
+    }
+    if(ctx.body === '2') {
+        addProps(ctx.from,{q1: "2"})
+        const categorias = categoriasInstructivos()
+        setTimeout(()=> {
+            flowDynamic(categorias)
+        },500)
     }
     
 })
-.addAnswer(["Elija desde donde necesita soporte","1. YPF","2. SHELL","3. AXION","4. PUMA","5. GULF","6. REFINOR","7. EST. BLANCA","8. OTRO"],
+.addAnswer("Verificando",
     {
         capture: true
     },
-    (ctx,{fallBack}) => {
-       switch (ctx.body) {
-        case "1": 
-            addProps(ctx.from,{bandera: "YP"})
-            break;
-        case "2": 
-            addProps(ctx.from,{bandera: "SH"})
-            break;
-        case "3": 
-            addProps(ctx.from,{bandera: "AX"})
-            break;
-        case "4": 
-            addProps(ctx.from,{bandera: "PU"})
-            break;
-        case "5": 
-            addProps(ctx.from,{bandera: "GU"})
-            break;
-        case "6": 
-            addProps(ctx.from,{bandera: "RE"})
-            break;   
-        case "7": 
-            addProps(ctx.from,{bandera: "BL"})
-            break;
-        case "8": 
-            addProps(ctx.from,{bandera: "OT"})
-            break;
-       
-        default:
-            return fallBack();
-       }
-    })
-.addAnswer(["Elija en que area se encuentra el puesto de trabajo donde necesita soporte","1. Playa","2. Tienda","3. Boxes","4. Administracion"],
-    {
-        capture: true
-    },
-    (ctx,{flowDynamic,fallBack}) => {
-       switch (ctx.body) {
-        case "1": 
-            addProps(ctx.from,{zone: "P"})
-            break;
-        case "2": 
-            addProps(ctx.from,{zone: "T"})
-            break;
-        case "3": 
-            addProps(ctx.from,{zone: "B"})
-            break;
-        case "4": 
-            addProps(ctx.from,{zone: "A"})
-            break;
+    (ctx,{fallBack,flowDynamic}) => {
 
+    const prevAnswer = getQ1(ctx.from)
+    
+    switch (prevAnswer) {
+        case "1":
+            const flag = banderaElegida(ctx.from,ctx.body)
+            if(!flag) {
+                const banderas = opcionesBanderas()
+                setTimeout(()=> {
+                flowDynamic(banderas)
+                },500)
+                return fallBack();
+            }
+
+            const zonas = opcionesZonas()
+            setTimeout(()=> {
+                flowDynamic(zonas)
+            },500)
+        break;
+        
+        case "2":
+            const category = categoriaElegida(ctx.from,ctx.body)
+            if(!category){
+                const categorias = categoriasInstructivos()
+                setTimeout(()=> {
+                 flowDynamic(categorias)
+                },500)
+                return fallBack();
+            }
+
+            async function listado() {
+                try {
+                  const instructivos = await opcionesInstructivos(ctx.from);
+                  setTimeout(() => {
+                    flowDynamic(instructivos);
+                  }, 500);
+                } catch (error) {
+                  console.error(error);
+                }
+              }
+
+              listado();
+        break;
+    
         default:
-            return fallBack();
-       }
-    flowDynamic(getBandera(ctx.from))
+            break;
+    }
+
+    })
+.addAnswer('Verificando',
+    {
+        capture: true
+    },
+    (ctx,{flowDynamic,fallBack,provider,endFlow}) => {
+
+        const prevAnswer = getQ1(ctx.from)
+    
+        switch (prevAnswer) {
+            case "1":
+                const zona = zonaElegida(ctx.from,ctx.body)
+                if(!zona) {
+                    const zonas = opcionesZonas()
+                     setTimeout(()=> {
+                    flowDynamic(zonas)
+                    },500)
+                    return fallBack();
+                }
+    
+                flowDynamic(getBandera(ctx.from))
+            break;
+            
+            case "2":
+                sendFile(ctx.from,ctx.body,provider)
+                return endFlow();
+            break;
+        
+            default:
+                break;
+        }
+
     })
 .addAnswer(['Si no lo conoce, solicitarlo a un operador de SIGES'],
 {
@@ -200,8 +236,9 @@ const asd = addKeyword(['asdasd'])
 },
 async (ctx,{provider}) => {
 
+    let prov = provider.getInstance()
+    await prov.sendMessage(`${ctx.from}@s.whatsapp.net`,{document: {url: './media/test.pdf'}})
     console.log(ctx)
-    await testing(ctx)
 
 })
 

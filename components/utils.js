@@ -669,5 +669,33 @@ const testing = async (ctx) => {
   });
 };
 
+const getQ1 = (from) => {
+  return ticket[from].q1
+}
 
-module.exports = {testing,tvInDb,getBandera,isUnknown,sendEmail,validateUser,addProps,computers,computerOptions,computerInfo,addAudio,addImage,deleteTicketData,sendMessage}
+const getCategory = (from) => {
+  return ticket[from].categoria
+}
+
+const getInstructivo = (from, index) => {
+  const instructivos = ticket[from].instructivos;
+
+  // Convertir el índice a un número entero
+  const numericIndex = parseInt(index);
+
+  if(parseInt(index) === instructivos.length+1) return "Salir"
+
+  // Verificar si el índice es un número entero válido
+  if (!Number.isInteger(numericIndex) || numericIndex <= 0 || numericIndex > instructivos.length) {
+    console.error('Índice inválido o fuera de rango.');
+    return false;
+  }
+
+  const path = instructivos[numericIndex - 1].path;
+  const filename = instructivos[numericIndex - 1].filename;
+  return { path, filename };
+};
+
+
+
+module.exports = {getInstructivo,getCategory,getQ1,testing,tvInDb,getBandera,isUnknown,sendEmail,validateUser,addProps,computers,computerOptions,computerInfo,addAudio,addImage,deleteTicketData,sendMessage}
