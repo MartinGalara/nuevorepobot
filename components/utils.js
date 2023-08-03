@@ -677,6 +677,10 @@ const getCategory = (from) => {
   return ticket[from].categoria
 }
 
+const getVipUser = (from) => {
+  return ticket[from].vipuser
+}
+
 const getInstructivo = (from, index) => {
   const instructivos = ticket[from].instructivos;
 
@@ -698,4 +702,4 @@ const getInstructivo = (from, index) => {
 
 
 
-module.exports = {getInstructivo,getCategory,getQ1,testing,tvInDb,getBandera,isUnknown,sendEmail,validateUser,addProps,computers,computerOptions,computerInfo,addAudio,addImage,deleteTicketData,sendMessage}
+module.exports = {getVipUser,getInstructivo,getCategory,getQ1,testing,tvInDb,getBandera,isUnknown,sendEmail,validateUser,addProps,computers,computerOptions,computerInfo,addAudio,addImage,deleteTicketData,sendMessage}

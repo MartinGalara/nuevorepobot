@@ -60,7 +60,7 @@ async (ctx,{endFlow,fallBack,flowDynamic}) => {
     }
     if(ctx.body === '2') {
         addProps(ctx.from,{q1: "2"})
-        const categorias = categoriasInstructivos()
+        const categorias = await categoriasInstructivos(ctx.from)
         setTimeout(()=> {
             flowDynamic(categorias)
         },500)
@@ -71,7 +71,7 @@ async (ctx,{endFlow,fallBack,flowDynamic}) => {
     {
         capture: true
     },
-    (ctx,{fallBack,flowDynamic}) => {
+    async (ctx,{fallBack,flowDynamic}) => {
 
     const prevAnswer = getQ1(ctx.from)
     
@@ -95,7 +95,7 @@ async (ctx,{endFlow,fallBack,flowDynamic}) => {
         case "2":
             const category = categoriaElegida(ctx.from,ctx.body)
             if(!category){
-                const categorias = categoriasInstructivos()
+                const categorias = await categoriasInstructivos(ctx.from)
                 setTimeout(()=> {
                  flowDynamic(categorias)
                 },500)

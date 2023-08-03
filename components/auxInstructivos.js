@@ -1,29 +1,63 @@
-const {addProps,getCategory,getInstructivo} = require('./utils.js')
+const {addProps,getCategory,getInstructivo,getVipUser} = require('./utils.js')
 
 const fs = require('fs');
 const path = require('path');
+const dotenv = require("dotenv");
+const axios = require('axios')
 
-const categoriasInstructivos = () => {
-  return ["Elija una categoria","1. Operación Playa","2. Operación Tienda"]
-    //return ["Elija una categoria","1. Operación Playa","2. Operación Tienda","3. Admin - Contable"]
+dotenv.config();
+
+const categoriasInstructivos = async (from) => {
+
+  const config = {
+    method: 'get',
+    url: `${process.env.SERVER_URL}/vipusers?phone=${from}`,
+  }
+
+  const vipuser = await axios(config)
+
+  if(vipuser.data.length){
+    addProps(from,{vipuser: true})
+    return ["Elija una categoria","1. Operación Playa","2. Operación Tienda","3. Admin - Contable"]
+  }
+  else{
+    addProps(from,{vipuser: false})
+    return ["Elija una categoria","1. Operación Playa","2. Operación Tienda"]
+  }
 }
 
 const categoriaElegida = (from,body) => {
-    switch (body) {
-        case "1": 
-            addProps(from,{categoria: "Operación Playa"})
-            return true
-        case "2": 
-            addProps(from,{categoria: "Operación Tienda"})
-            return true
-        /* case "3": 
-            addProps(from,{categoria: "Admin - Contable"})
-            return true */
-       
-        default:
-            return false
-       }
+  
+const vipuser = getVipUser(from)
 
+if(vipuser){
+  switch (body) {
+    case "1": 
+        addProps(from,{categoria: "Operación Playa"})
+        return true
+    case "2": 
+        addProps(from,{categoria: "Operación Tienda"})
+        return true
+    case "3": 
+        addProps(from,{categoria: "Admin - Contable"})
+        return true 
+   
+    default:
+        return false
+   }
+}else{
+  switch (body) {
+    case "1": 
+        addProps(from,{categoria: "Operación Playa"})
+        return true
+    case "2": 
+        addProps(from,{categoria: "Operación Tienda"})
+        return true
+  
+    default:
+        return false
+   }
+}
 }
 
 const opcionesInstructivos = (from) => {
