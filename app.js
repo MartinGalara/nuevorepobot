@@ -21,7 +21,7 @@ const {categoriasInstructivos,categoriaElegida,opcionesInstructivos,sendFile} = 
 
 const opcionesProblema = ['Despachos CIO','Aplicaciones','Impresora Fiscal / Comandera','Impresora Común / Oficina','Sistema SIGES','Libro IVA','Servidor']
 
-const saludo = ['Gracias por comunicarte con Sistema SIGES.','Elija el numero de la opción deseada',`1. Generar un ticket de soporte`,'2. Descargar un instructivo','3. Salir']
+const saludo = ['Gracias por comunicarte con Sistema SIGES.','Elija el numero de la opción deseada',`1. Descargar un instructivo`,`2. Generar un ticket de soporte`,'3. Salir']
 
 const opciones = ['Elija el numero del problema que tiene','1. Despachos CIO','2. Aplicaciones','3. Impresora Fiscal / Comandera','4. Impresora Común / Oficina','5. Sistema SIGES','6. Libro IVA','7. Servidor']
 
@@ -51,15 +51,15 @@ async (ctx,{endFlow,fallBack,flowDynamic}) => {
     if(ctx.body !== '1' && ctx.body !== '2'){
         return fallBack();
     }
-    if(ctx.body === '1') {
-        addProps(ctx.from,{q1: "1"})
+    if(ctx.body === '2') {
+        addProps(ctx.from,{q1: "2"})
         const banderas = opcionesBanderas()
         setTimeout(()=> {
             flowDynamic(banderas)
         },500)
     }
-    if(ctx.body === '2') {
-        addProps(ctx.from,{q1: "2"})
+    if(ctx.body === '1') {
+        addProps(ctx.from,{q1: "1"})
         const categorias = await categoriasInstructivos(ctx.from)
         setTimeout(()=> {
             flowDynamic(categorias)
@@ -76,7 +76,7 @@ async (ctx,{endFlow,fallBack,flowDynamic}) => {
     const prevAnswer = getQ1(ctx.from)
     
     switch (prevAnswer) {
-        case "1":
+        case "2":
             const flag = banderaElegida(ctx.from,ctx.body)
             if(!flag) {
                 const banderas = opcionesBanderas()
@@ -92,7 +92,7 @@ async (ctx,{endFlow,fallBack,flowDynamic}) => {
             },500)
         break;
         
-        case "2":
+        case "1":
             const category = categoriaElegida(ctx.from,ctx.body)
             if(!category){
                 const categorias = await categoriasInstructivos(ctx.from)
@@ -130,7 +130,7 @@ async (ctx,{endFlow,fallBack,flowDynamic}) => {
         const prevAnswer = getQ1(ctx.from)
     
         switch (prevAnswer) {
-            case "1":
+            case "2":
                 const zona = zonaElegida(ctx.from,ctx.body)
                 if(!zona) {
                     const zonas = opcionesZonas()
@@ -143,7 +143,7 @@ async (ctx,{endFlow,fallBack,flowDynamic}) => {
                 flowDynamic(getBandera(ctx.from))
             break;
             
-            case "2":
+            case "1":
                 sendFile(ctx.from,ctx.body,provider)
                 return endFlow();
             break;
