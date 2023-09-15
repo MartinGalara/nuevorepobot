@@ -157,14 +157,16 @@ async (ctx,{endFlow,fallBack,flowDynamic}) => {
 {
     capture: true
 },
-async (ctx, {flowDynamic,fallBack,provider}) => {
+async (ctx, {flowDynamic,fallBack,provider,endFlow}) => {
+
+    if(ctx.body === "salir") return endFlow({body: "Escriba *sigesbot* para volver a comenzar"})
+    else{
     let id = ctx.body
 
-//if(id !== "0"){
     const user = await validateUser(ctx.from,id)
     if(!user){
         const prov = provider.getInstance()
-        await prov.sendMessage(`${ctx.from}@s.whatsapp.net`,{text:`Número invalido`})
+        await prov.sendMessage(`${ctx.from}@s.whatsapp.net`,{text:`Ingrese un número válido o envíe *salir* para volver a comenzar`})
         return fallBack();
     }
     addProps(ctx.from,{unknown: false})
@@ -175,20 +177,7 @@ async (ctx, {flowDynamic,fallBack,provider}) => {
     setTimeout(()=> {
         flowDynamic(pcs)
     },500)
-/* }else{
-    addProps(ctx.from,{unknown: true})
-    addProps(ctx.from,{id: "No brinda identificador"})
-    addProps(ctx.from,{userId: "No  brinda identificador"})
-    addProps(ctx.from,{email: "No brinda identificador"})
-    addProps(ctx.from,{tv: "No brinda identificador"})
-    addProps(ctx.from,{pf: "No brinda identificador"})
-    addProps(ctx.from,{vip: null})
-    addProps(ctx.from,{phone: ctx.from})
-    const pcs = computerOptions(ctx.from);
-    setTimeout(()=> {
-        flowDynamic(pcs)
-    },500)
-} */
+    }
 })
 .addAnswer(['Verificando'],
 {
